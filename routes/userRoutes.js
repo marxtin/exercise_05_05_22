@@ -7,6 +7,7 @@ const router = express.Router();
 
 router.get("/checkUsername", async (req, res) => {
   const user = await User.findOne({ username: req.body.username });
+
   if (user === null) {
     return res.status(200).json({ message: "Username available", user: user });
   }
@@ -20,17 +21,18 @@ router.get("/checkUsername", async (req, res) => {
 router.post("/register", async (req, res) => {
   const hashedPassword = await bcrypt.hash(req.body.password, 10);
   console.log(hashedPassword);
-  const checkUser = await User.findOne({ username: req.body.username });
-  const checkEmail = await User.findOne({ username: req.body.email });
+  const checkUser = await User.findOne({ username: req.body.username }); 
+  const checkEmail = await User.findOne({ email: req.body.email });
 
   if (checkUser !== null)
-    return res
+   { return res
       .status(409)
-      .json({ message: "username already in use", user: checkUser });
+      .json({ message: "username already in use", user: checkUser });}  
+
   if (checkEmail !== null)
-    return res
+   { return res
       .status(409)
-      .json({ message: "email already in use", email: checkEmail });
+      .json({ message: "email already in use", email: checkEmail });}
 
   const { username, firstname, lastname, email } = req.body;
 
